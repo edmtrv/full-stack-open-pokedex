@@ -49,3 +49,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+
+      - uses: 8398a7/action-slack@v3
+        if: ${{ github.event_name == 'push' && !contains(join(github.event.commits.*.message, ', '), '#skip') }}
+      - name: failure
+        with:
+          if: ${{ job.status == 'failure' || job.status == 'cancelled' }}
+          status: ${{ job.status }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
+      - name: success
+        with:
+          if: ${{ job.status == 'success'}}
+          status: ${{ job.status }}
+          fields: repo,message
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} 
+        if: always() 
