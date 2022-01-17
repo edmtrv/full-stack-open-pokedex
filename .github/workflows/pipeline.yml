@@ -56,7 +56,7 @@ jobs:
           fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest 
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: ${{ job.status == 'success' }}
+        if: ${{ job.status == 'failure' || job.status == 'cancelled' }}
       - name: success notification
         uses: 8398a7/action-slack@v3
         with:
@@ -71,4 +71,4 @@ jobs:
             }
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-        if: ${{ job.status == 'failure' || job.status == 'cancelled' }}
+        if: ${{ job.status == 'success' }}
