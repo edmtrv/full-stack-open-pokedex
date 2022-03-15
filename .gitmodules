@@ -1,0 +1,3 @@
+[submodule "phonebook-monorepo"]
+	path = phonebook-monorepo
+	url = https://github.com/edmtrv/phonebook-monorepo.git
